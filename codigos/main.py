@@ -1,26 +1,26 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DOS GRADIENTES
-
 import sympy as sy
 
 sy.init_printing()
 
+#Condições Iniciais
 x = 1/3
 y = 5/2
+
+x1 = sy.Symbol('x1')
+x2 = sy.Symbol('x2')
+alfa = sy.Symbol('alfa')
+
+funcao = ((x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2)
 
 resultado1 = 0
 resultado2 = 0
 i = 0
 
-#while (x - resultado1) > 0.001 and (y - resultado2) > 0.001:
+#while (abs(resultado1 - x) > 0.000001) or (abs(resultado2 - y) > 0.000001):
 while i < 5:
 
     print('\nINTERAÇÃO ',i+1," :")
-
-    x1 = sy.Symbol('x1')
-    x2 = sy.Symbol('x2')
-    alfa = sy.Symbol('alfa')
-
-    funcao = ((x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2)
 
     grad1 = sy.diff(funcao, x1)         #Gradiente da Função
     grad2 = sy.diff(funcao, x2)
@@ -44,8 +44,7 @@ while i < 5:
   
     resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
     resultado2 = y2.subs(alfa, raiz)
-    print('Ponto X1:',resultado1)
-    print('Ponto X2:',resultado2)
+    print('Ponto X1:',resultado1,'\nPonto X2:',resultado2)
    
     i= i + 1                            #Atualiza os valores de x e y
     x = resultado1

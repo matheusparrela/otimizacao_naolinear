@@ -1,8 +1,6 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DE NEWTON
 import sympy as sy
-from numpy import *
 import numpy as np
-from numpy.linalg import inv
 
 def main(): 
   
@@ -23,10 +21,9 @@ def main():
     controley = 1
     i = 0
 
-    #while (abs(controlex) > 0.000001) or (abs(controlex) > 0.000001):
-    while i < 5:
+    while (abs(controlex) > 0.000001) or (abs(controlex) > 0.000001):
 
-        print('\nINTERAÇÃO ',i+1," :")
+        print('\nINTERAÇÃO',i+1,":")
 
         grad1 = sy.diff(funcao, x1)         #Gradiente da Função
         grad2 = sy.diff(funcao, x2)
@@ -37,27 +34,26 @@ def main():
         b = grad2.subs(x1, x)               #Valor de Y no gradiente
         b2 = b.subs(x2, y)
 
-        h11 = int(sy.diff(grad1, x1))
+        h11 = int(sy.diff(grad1, x1))       #Calcula os elementos do hesiano
         h12 = int(sy.diff(grad1, x2))
         h21 = int(sy.diff(grad2, x1))
         h22 = int(sy.diff(grad2, x2))
-
-        P = np.array([[x], [y]])
+                                        #Passa as condições iniciais, elementos do hesiano e o gradiente no pontos iniciais para matrizes
+        P = np.array([[x], [y]])            
         H = np.array([[h11, h12], [h21, h22]])
         G = np.array([[a2], [b2]])
 
-        H_inv = inv(H)
+        H_inv = np.linalg.inv(H)        #Inverte a matriz do hesiano
        
-        x0 = P - np.dot(H_inv, G)
+        x0 = P - np.dot(H_inv, G)       #Calcula do ponto x0 
 
-        resultado1 = x0[0][0]
+        resultado1 = x0[0][0]           #Retira os resultados da matriz
         resultado2 = x0[1][0]
 
         print('\nResultado:', int(resultado1),'\n          ', int(resultado2))
 
         controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados
         controley = resultado2 - y
-        
         i = i + 1                            #Atualiza os valores de x e y
         x = resultado1
         y = resultado2

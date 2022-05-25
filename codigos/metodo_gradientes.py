@@ -23,8 +23,9 @@ def main():
 
     while (abs(controlex) > 0.000001) or (abs(controlex) > 0.000001):
     #while i < 5:
-
-        print('\nINTERAÇÃO ',i+1," :")
+        
+        i = i + 1 
+        print('\nINTERAÇÃO ',i," :")
 
         grad1 = sy.diff(funcao, x1)         #Gradiente da Função
         grad2 = sy.diff(funcao, x2)
@@ -52,9 +53,8 @@ def main():
     
         controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados
         controley = resultado2 - y
-        
-        i= i + 1                            #Atualiza os valores de x e y
-        x = resultado1
+                         
+        x = resultado1                      #Atualiza os valores de x e y
         y = resultado2
   
 main()

@@ -21,12 +21,12 @@ def main():
     resultado2 = 0
     controlex = 1
     controley = 1
-    i = 0
+    k = 0
 
     while (abs(controlex) > 0.000001) or (abs(controley) > 0.000001):
         
-        i = i + 1
-        print('\nINTERAÇÃO',i,":")
+        k = k + 1
+        print('\nINTERAÇÃO',k,":")
 
         grad1 = sy.diff(funcao, x1)         #Gradiente da Função
         grad2 = sy.diff(funcao, x2)
@@ -37,11 +37,6 @@ def main():
         b = grad2.subs(x1, x)               #Valor de Y no gradiente
         b2 = b.subs(x2, y)
 
-        norma = math.sqrt(a2**2 + b2**2)    #Calcula e verifica se a norma é menor que o erro
-        
-        if norma <= e:
-            print("Break")
-            break
 
         h11 = sy.diff(grad1, x1)       #Calcula os elementos do hesiano
         h12 = sy.diff(grad1, x2)
@@ -53,19 +48,24 @@ def main():
         #Passa as condições iniciais, elementos do hesiano e o gradiente no pontos iniciais para matrizes
 
         hessiana = sy.Matrix([[h11, h12],[h21, h22]]) 
-        x0 = sy.Matrix([[x], [y]])
+        grad = sy.Matrix([[a2], [b2]])
 
-        print(hessiana)
+        print('\n\n',hessiana)
 
-        inv_hesiana = hessiana.inv()     #Inverte a matriz hessiana
+        new_h = hessiana.subs(x1, x)      #Substitui os valores das icognitas pelos pontos iniciais
+        hessiana = new_h.subs(x2, y)
 
+        inv_hessiana = hessiana.inv()     #Inverte a matriz hessiana
+
+        print(inv_hessiana)
+
+        prod = -inv_hessiana*grad           #Calcula o produto das matrizes
+        print('\n\n',prod)
+
+
+
+
+
+        exit()
         
-        break
-
-
-
-
-
-
-
 main()

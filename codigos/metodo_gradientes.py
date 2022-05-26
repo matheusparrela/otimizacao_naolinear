@@ -19,13 +19,13 @@ def main():
     resultado2 = 0
     controlex = 1
     controley = 1
-    i = 0
+    k = 0
 
     while (abs(controlex) > 0.000001) or (abs(controlex) > 0.000001):
-    #while i < 5:
+    #while k < 5:
         
-        i = i + 1 
-        print('\nINTERAÇÃO ',i," :")
+        k = k + 1 
+        print('\nINTERAÇÃO ',k," :")
 
         grad1 = sy.diff(funcao, x1)         #Gradiente da Função
         grad2 = sy.diff(funcao, x2)

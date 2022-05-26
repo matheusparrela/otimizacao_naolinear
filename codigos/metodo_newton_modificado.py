@@ -1,6 +1,5 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DE NEWTON MODIFICADO   
 import sympy as sy
-import numpy as np
 import math
 
 def main(): 
@@ -60,10 +59,7 @@ def main():
 
         inv_hesiana = hessiana.inv()     #Inverte a matriz hessiana
 
-        print('\n\n', inv_hesiana)
-
-        print('\n\n', inv_hesiana * x0)
-
+        
         break
 
 

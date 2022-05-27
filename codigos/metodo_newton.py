@@ -23,7 +23,7 @@ def main():
     while (abs(controlex) > 0.000001) or (abs(controley) > 0.000001):
         
         k = k + 1
-        print('\nINTERAÇÃO',k,":")
+        print('\nITERAÇÃO',k,":")
         
         grad1 = sy.diff(funcao, x1)         #Gradiente da Função
         grad2 = sy.diff(funcao, x2)

@@ -31,7 +31,6 @@ def main():
         
         a = grad1.subs(x1, x)               #Valor de X no gradiente
         a2 = a.subs(x2, y)
-
         b = grad2.subs(x1, x)               #Valor de Y no gradiente
         b2 = b.subs(x2, y)
 
@@ -40,17 +39,17 @@ def main():
         h21 = sy.diff(grad2, x1)
         h22 = sy.diff(grad2, x2)
         
-        #Passa as condições iniciais, elementos do hesiano e o gradiente no pontos iniciais para matrizes
+        #Passa as condições iniciais, elementos da hessiana e o gradiente no pontos iniciais para matrizes
 
         hessiana = sy.Matrix([[h11, h12],[h21, h22]]) 
-        grad = sy.Matrix([[a2], [b2]])
+        gradiente = sy.Matrix([[a2], [b2]])
 
-        new_h = hessiana.subs(x1, x)      #Substitui os valores das icognitas pelos pontos iniciais
+        new_h = hessiana.subs(x1, x)        #Substitui os valores das incognitas pelos pontos iniciais
         hessiana = new_h.subs(x2, y)
 
-        inv_hessiana = hessiana.inv()     #Inverte a matriz hessiana
+        inv_hessiana = hessiana.inv()       #Inverte a matriz hessiana
 
-        prod = -inv_hessiana*grad           #Calcula o produto das matrizes
+        prod = -inv_hessiana*gradiente      #Calcula o produto das matrizes
 
         y1 = (x + alfa*prod[0,0])
         y2 = (y + alfa*prod[1,0])

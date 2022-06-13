@@ -17,42 +17,35 @@ def main():
     
     resultado1 = 0
     resultado2 = 0
-    controlex = 1
-    controley = 1
     k = 0
 
-    while (abs(controlex) > 0.00001) or (abs(controley) > 0.00001):
+    grad1 = sy.diff(funcao, x1)         #Gradiente da Função
+    grad2 = sy.diff(funcao, x2)
+
+    h11 = sy.diff(grad1, x1)            #Calcula os elementos da hessiana
+    h12 = sy.diff(grad1, x2)
+    h21 = sy.diff(grad2, x1)
+    h22 = sy.diff(grad2, x2)
+
+    #Passa as condições iniciais, elementos da hessiana e o gradiente no pontos iniciais para matrizes
+
+    hessiana = sy.Matrix([[h11, h12],[h21, h22]]) 
+    gradiente = sy.Matrix([[grad1], [grad2]])
+
+    inv_hessiana = -hessiana.inv()       #Inverte a matriz hessiana
+
+    prod = inv_hessiana*gradiente      #Calcula o produto das matrizes
+
+    #while (abs(controlex) > 0.00001) or (abs(controley) > 0.00001):
+    while True:
         
         k = k + 1
-        print('\nITERAÇÃO',k,":")
 
-        grad1 = sy.diff(funcao, x1)         #Gradiente da Função
-        grad2 = sy.diff(funcao, x2)
-        
-        a = grad1.subs(x1, x)               #Valor de X no gradiente
-        a2 = a.subs(x2, y)
-        b = grad2.subs(x1, x)               #Valor de Y no gradiente
-        b2 = b.subs(x2, y)
+        prod1 = prod.subs(x1, x)
+        prod2 = prod1.subs(x2, y)
 
-        h11 = sy.diff(grad1, x1)       #Calcula os elementos do hesiano
-        h12 = sy.diff(grad1, x2)
-        h21 = sy.diff(grad2, x1)
-        h22 = sy.diff(grad2, x2)
-        
-        #Passa as condições iniciais, elementos da hessiana e o gradiente no pontos iniciais para matrizes
-
-        hessiana = sy.Matrix([[h11, h12],[h21, h22]]) 
-        gradiente = sy.Matrix([[a2], [b2]])
-
-        new_h = hessiana.subs(x1, x)        #Substitui os valores das incognitas pelos pontos iniciais
-        hessiana = new_h.subs(x2, y)
-
-        inv_hessiana = hessiana.inv()       #Inverte a matriz hessiana
-
-        prod = -inv_hessiana*gradiente      #Calcula o produto das matrizes
-
-        y1 = (x + alfa*prod[0,0])
-        y2 = (y + alfa*prod[1,0])
+        y1 = (x + alfa*prod2[0,0])
+        y2 = (y + alfa*prod2[1,0])
 
         funcao1 = funcao.subs(x1, y1)       #Substituição de de y1 e y2 na função 
         funcao2 = funcao1.subs(x2, y2)
@@ -60,10 +53,17 @@ def main():
         d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
 
         raiz = (sy.solve(d1))               #Raiz da derivada da função
-        raiz = raiz[0]
+        
+        try:               
+            raiz = raiz[0]
+
+        except:
+            exit()
 
         resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
         resultado2 = y2.subs(alfa, raiz)
+        
+        print('\nITERAÇÃO',k,":")
         print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
      
         controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados

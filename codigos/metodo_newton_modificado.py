@@ -1,14 +1,15 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DE NEWTON MODIFICADO   
+
 import sympy as sy
 
 def main(): 
   
-    sy.init_printing()
+    sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
     #Condições Iniciais
-    x = 0.5
-    y = 0.5
-   
+    x = 2
+    y = 2 
+
     x1 = sy.Symbol('x1')
     x2 = sy.Symbol('x2')
     alfa = sy.Symbol('alfa')
@@ -30,6 +31,7 @@ def main():
     #Passa as condições iniciais, elementos da hessiana e o gradiente no pontos iniciais para matrizes
 
     hessiana = sy.Matrix([[h11, h12],[h21, h22]]) 
+
     gradiente = sy.Matrix([[grad1], [grad2]])
 
     inv_hessiana = -hessiana.inv()       #Inverte a matriz hessiana
@@ -49,11 +51,11 @@ def main():
 
         funcao1 = funcao.subs(x1, y1)       #Substituição de de y1 e y2 na função 
         funcao2 = funcao1.subs(x2, y2)
-
+       
         d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
-
-        raiz = (sy.solve(d1))               #Raiz da derivada da função
-        
+  
+        raiz = (sy.solve(d1))
+       
         try:               
             raiz = raiz[0]
 
@@ -64,12 +66,12 @@ def main():
         resultado2 = y2.subs(alfa, raiz)
         
         print('\nITERAÇÃO',k,":")
-        print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
+        print('Ponto X1:',resultado1,'\nPonto X2:',resultado2)
      
         controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados
         controley = resultado2 - y
                          
         x = resultado1                      #Atualiza os valores de x e y
         y = resultado2
-        
+
 main()

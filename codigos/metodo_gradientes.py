@@ -1,9 +1,10 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DOS GRADIENTES
 import sympy as sy
 import matplotlib.pyplot as mp
-import numpy as np 
+import numpy as np
+import solucao_grafica as sg 
 
-sy.init_printing()
+sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
 def main():
 
@@ -65,53 +66,16 @@ def main():
         controley = resultado2 - y
 
         iteracoes.append(k)
-        pontos.append(funtion(x, y))
+        pontos.append(sg.funtion(x, y))
         lista_x.append(x)
         lista_y.append(y)
         
         x = resultado1                      #Atualiza os valores de x e y
         y = resultado2
 
-    plot_convergencia(iteracoes, pontos)
-    plot_curvasniveis(lista_x, lista_y) 
+    sg.plot_convergencia(iteracoes, pontos)
+    sg.plot_curvasniveis(lista_x, lista_y) 
   
 
-
-def funtion(x, y):
-    return  (((x - 3)**2)/4 + ((y - 2)**2)/9) + 13
     
-
-def plot_convergencia(iteracoes, pontos):
-
-    mp.title('Convergência por iteração')
-    mp.xlabel('f(x,y)')
-    mp.ylabel('Iterações')
-    mp.plot(iteracoes, pontos)
-    mp.show()
-
-
-def plot_curvasniveis(x, y):
-
-    #Curvas de Nivel e Convergência
-    mp.plot(x, y)
-
-    mp.style.use('seaborn-white')
-
-    x = np.linspace(0, 5, 600)
-    y = np.linspace(0, 5, 600)
-
-    X, Y = np.meshgrid(x, y)
-    Z = funtion(X, Y)
-
-    contours = mp.contour(X, Y, Z, 10, colors='black')
-    mp.clabel(contours, inline=True, fontsize=8)
-
-    mp.imshow(Z, extent=[0, 5, 0, 5], origin='lower', cmap='RdGy')
-    mp.colorbar();
-    mp.title('Curva de níveis e Convergência')
-    mp.xlabel('x')
-    mp.ylabel('y')
-
-    mp.show()
-
 main()

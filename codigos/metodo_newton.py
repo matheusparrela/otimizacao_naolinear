@@ -50,6 +50,7 @@ def main():
 
         if (resultado1 != x0[0,0] or resultado2 != x0[1,0]) and i != 0:
             print("Erro - Função não quadrática")
+            exit()
 
         resultado1 = x0[0,0]           #Retira os resultados da matriz
         resultado2 = x0[1,0]
@@ -60,13 +61,13 @@ def main():
         print('\nResultado:', resultado1,'\n', resultado2)
 
         iteracoes.append(i)
-        pontos.append(sg.funtion(x, y))
+        pontos.append(sg.funcao(x, y))
         lista_x.append(x)
         lista_y.append(y)
-
-    sg.plot_convergencia(iteracoes, pontos)
+        
+    #sg.plot_convergencia(iteracoes, pontos)
     sg.plot_curvasniveis(lista_x, lista_y)
-    
+    sg.d3()
 
 main()
 

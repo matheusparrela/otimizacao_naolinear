@@ -1,6 +1,7 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DE NEWTON MODIFICADO   
 
 import sympy as sy
+import solucao_grafica as sg
 
 def main(): 
   
@@ -19,6 +20,11 @@ def main():
     resultado1 = 0
     resultado2 = 0
     k = 0
+    pontos = []
+    iteracoes = []
+    lista_x = []
+    lista_y = []
+
 
     grad1 = sy.diff(funcao, x1)         #Gradiente da Função
     grad2 = sy.diff(funcao, x2)
@@ -39,7 +45,7 @@ def main():
     prod = inv_hessiana*gradiente      #Calcula o produto das matrizes
 
     #while (abs(controlex) > 0.00001) or (abs(controley) > 0.00001):
-    while True:
+    while k < 10:
         
         k = k + 1
 
@@ -71,7 +77,19 @@ def main():
         controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados
         controley = resultado2 - y
                          
-        x = resultado1                      #Atualiza os valores de x e y
-        y = resultado2
+        x = round(resultado1,4)                      #Atualiza os valores de x e y
+        y = round(resultado2,4)  
+
+
+        iteracoes.append(k)
+        pontos.append(sg.funcao(x, y))
+        lista_x.append(x)
+        lista_y.append(y)
+
+    #sg.plot_convergencia(iteracoes, pontos)
+    #sg.plot_curvasniveis(lista_x, lista_y)
+    #sg.d3() 
+    #sg.d31(x,y)
+
 
 main()

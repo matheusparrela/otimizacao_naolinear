@@ -11,12 +11,10 @@ def main():
     #Condições Iniciais
     x = 4
     y = 4
-
-    x1 = sy.Symbol('x1')
-    x2 = sy.Symbol('x2')
-    alfa = sy.Symbol('alfa')
-
-    funcao = (((x1 - 3)**2)/4 + ((x2 - 2)**2)/9) + 13
+    
+    symbols = sy.symbols("x1 x2 alfa")
+    funcao = "(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9) + 13"
+    expression = sy.parsing.sympy_parser.parse_expr(funcao)
 
     controlex = 1
     controley = 1
@@ -26,27 +24,27 @@ def main():
     lista_x = []
     lista_y = []
 
-    grad1 = sy.diff(funcao, x1)         #Gradiente da Função
-    grad2 = sy.diff(funcao, x2)
+    grad1 = sy.diff(expression, symbols[0])         #Gradiente da Função
+    grad2 = sy.diff(expression, symbols[1])
 
     #Critério de Parada - Se a variação dos ponto X for maior que 0,001
     while (abs(controlex) > 0.001) or (abs(controley) > 0.001):
         
         k = k + 1 
         
-        a = grad1.subs(x1, x)               #Valor de X no gradiente
-        a2 = a.subs(x2, y)
+        a = grad1.subs(symbols[0], x)               #Valor de X no gradiente
+        a2 = a.subs(symbols[1], y)
 
-        b = grad2.subs(x1, x)               #Valor de Y no gradiente
-        b2 = b.subs(x2, y)
+        b = grad2.subs(symbols[0], x)               #Valor de Y no gradiente
+        b2 = b.subs(symbols[1], y)
     
-        y1 = (x - alfa*a2)                  #Expressão do alfa
-        y2 = (y - alfa*b2)
+        y1 = (x - symbols[2]*a2)                  #Expressão do alfa
+        y2 = (y - symbols[2]*b2)
 
-        funcao1 = funcao.subs(x1, y1)       #Substituição de de y1 e y2 na função 
-        funcao2 = funcao1.subs(x2, y2)
+        funcao1 = expression.subs(symbols[0], y1)       #Substituição de de y1 e y2 na função 
+        funcao2 = funcao1.subs(symbols[1], y2)
         
-        d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
+        d1 = sy.diff(funcao2, symbols[2])         #Derivada da função em relação a alfa
 
         raiz = (sy.solve(d1))               #Raiz da derivada da função
     
@@ -56,26 +54,30 @@ def main():
         except:
             exit()
     
-        resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
-        resultado2 = y2.subs(alfa, raiz)
+        resultado1 = y1.subs(symbols[2], raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
+        resultado2 = y2.subs(symbols[2], raiz)
 
         print('\nITERAÇÃO ',k," :")
         print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
     
         controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados
         controley = resultado2 - y
-
-        iteracoes.append(k)
-        pontos.append(sg.funtion(x, y))
-        lista_x.append(x)
-        lista_y.append(y)
         
         x = resultado1                      #Atualiza os valores de x e y
         y = resultado2
 
+        iteracoes.append(k)
+        pontos.append(sg.funcao(expression, symbols, x, y))
+        lista_x.append(x)
+        lista_y.append(y)
+    
+    pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+        
+      
     sg.plot_convergencia(iteracoes, pontos)
-    sg.plot_curvasniveis(lista_x, lista_y) 
-  
+    sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
+    sg.grafico_3d(expression, symbols)
+    sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
 
     
 main()

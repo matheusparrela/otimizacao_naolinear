@@ -15,7 +15,10 @@ def main():
     x2 = sy.Symbol('x2')
     alfa = sy.Symbol('alfa')
 
-    funcao = 2*x1**2 - 1.05*x1**4 + ((x1**6)/6) +  x1*x2 + x2**2
+    symbols = sy.symbols("x1 x2 alfa")
+    funcao = "2*x1**2 - 1.05*x1**4 + ((x1**6)/6) +  x1*x2 + x2**2"
+    expression = sy.parsing.sympy_parser.parse_expr(funcao)
+    
     
     resultado1 = 0
     resultado2 = 0
@@ -26,13 +29,13 @@ def main():
     lista_y = []
 
 
-    grad1 = sy.diff(funcao, x1)         #Gradiente da Função
-    grad2 = sy.diff(funcao, x2)
+    grad1 = sy.diff(expression, symbols[0])         #Gradiente da Função
+    grad2 = sy.diff(expression, symbols[1])
 
-    h11 = sy.diff(grad1, x1)            #Calcula os elementos da hessiana
-    h12 = sy.diff(grad1, x2)
-    h21 = sy.diff(grad2, x1)
-    h22 = sy.diff(grad2, x2)
+    h11 = sy.diff(grad1, symbols[0])            #Calcula os elementos da hessiana
+    h12 = sy.diff(grad1, symbols[1])
+    h21 = sy.diff(grad2, symbols[0])
+    h22 = sy.diff(grad2, symbols[1])
 
     #Passa as condições iniciais, elementos da hessiana e o gradiente no pontos iniciais para matrizes
 
@@ -49,16 +52,16 @@ def main():
         
         k = k + 1
 
-        prod1 = prod.subs(x1, x)
-        prod2 = prod1.subs(x2, y)
+        prod1 = prod.subs(symbols[0], x)
+        prod2 = prod1.subs(symbols[1], y)
 
-        y1 = (x + alfa*prod2[0,0])
-        y2 = (y + alfa*prod2[1,0])
+        y1 = (x + symbols[2]*prod2[0,0])
+        y2 = (y + symbols[2]*prod2[1,0])
 
-        funcao1 = funcao.subs(x1, y1)       #Substituição de de y1 e y2 na função 
-        funcao2 = funcao1.subs(x2, y2)
+        funcao1 = expression.subs(symbols[0], y1)       #Substituição de de y1 e y2 na função 
+        funcao2 = funcao1.subs(symbols[1], y2)
        
-        d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
+        d1 = sy.diff(funcao2, symbols[2])         #Derivada da função em relação a alfa
   
         raiz = (sy.solve(d1))
        
@@ -68,8 +71,8 @@ def main():
         except:
             exit()
 
-        resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
-        resultado2 = y2.subs(alfa, raiz)
+        resultado1 = y1.subs(symbols[2], raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
+        resultado2 = y2.subs(symbols[2], raiz)
         
         print('\nITERAÇÃO',k,":")
         print('Ponto X1:',resultado1,'\nPonto X2:',resultado2)
@@ -82,14 +85,18 @@ def main():
 
 
         iteracoes.append(k)
-        pontos.append(sg.funcao(x, y))
+        pontos.append(sg.funcao(expression, symbols, x, y))
         lista_x.append(x)
         lista_y.append(y)
+    
+    pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+        
+      
+    sg.plot_convergencia(iteracoes, pontos)
+    sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
+    sg.grafico_3d(expression, symbols)
+    sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
 
-    #sg.plot_convergencia(iteracoes, pontos)
-    #sg.plot_curvasniveis(lista_x, lista_y)
-    #sg.d3() 
-    #sg.d31(x,y)
-
+    
 
 main()

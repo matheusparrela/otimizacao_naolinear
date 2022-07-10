@@ -1,7 +1,5 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DOS GRADIENTES
 import sympy as sy
-import matplotlib.pyplot as mp
-import numpy as np
 import solucao_grafica as sg 
 
 sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
@@ -11,8 +9,10 @@ def main():
     #Condições Iniciais
     x = 4
     y = 4
+
+    alfa = sy.Symbols("alfa")
     
-    symbols = sy.symbols("x1 x2 alfa")
+    symbols = sy.symbols("x1 x2")
     funcao = "(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9) + 13"
     expression = sy.parsing.sympy_parser.parse_expr(funcao)
 
@@ -30,21 +30,19 @@ def main():
     #Critério de Parada - Se a variação dos ponto X for maior que 0,001
     while (abs(controlex) > 0.001) or (abs(controley) > 0.001):
         
-        k = k + 1 
-        
         a = grad1.subs(symbols[0], x)               #Valor de X no gradiente
         a2 = a.subs(symbols[1], y)
 
         b = grad2.subs(symbols[0], x)               #Valor de Y no gradiente
         b2 = b.subs(symbols[1], y)
     
-        y1 = (x - symbols[2]*a2)                  #Expressão do alfa
-        y2 = (y - symbols[2]*b2)
+        y1 = (x - alfa*a2)                  #Expressão do alfa
+        y2 = (y - alfa*b2)
 
         funcao1 = expression.subs(symbols[0], y1)       #Substituição de de y1 e y2 na função 
         funcao2 = funcao1.subs(symbols[1], y2)
         
-        d1 = sy.diff(funcao2, symbols[2])         #Derivada da função em relação a alfa
+        d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
 
         raiz = (sy.solve(d1))               #Raiz da derivada da função
     
@@ -54,8 +52,8 @@ def main():
         except:
             exit()
     
-        resultado1 = y1.subs(symbols[2], raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
-        resultado2 = y2.subs(symbols[2], raiz)
+        resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
+        resultado2 = y2.subs(alfa, raiz)
 
         print('\nITERAÇÃO ',k," :")
         print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
@@ -67,6 +65,8 @@ def main():
         y = resultado2
 
         iteracoes.append(k)
+        k = k + 1 
+
         pontos.append(sg.funcao(expression, symbols, x, y))
         lista_x.append(x)
         lista_y.append(y)

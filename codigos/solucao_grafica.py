@@ -4,9 +4,6 @@ import numpy as np
 import pandas
 import operator
 
-import youtube_dl
-
-
 def funcao(expression, symbols, x, y):
 
     l = operator.length_hint(x)
@@ -55,10 +52,10 @@ def plot_convergencia(iteracoes, pontos):
     mp.ylabel('f(x,y)')
     mp.xlabel('Iterações')
 
-    lim_a = int(pontos[0]-1)
-    lim_b = int(pontos[len(pontos)-1]+1)
-    lim_c = 0
-    lim_d = int(len(iteracoes)+1)
+    lim_a = int(min(pontos)-1)
+    lim_b = int(max(pontos)+1)
+    lim_c = int(min(iteracoes))
+    lim_d = int(max(iteracoes)+1)
 
     mp.ylim(lim_a,lim_b)
     mp.xlim(lim_c,lim_d)
@@ -72,17 +69,22 @@ def plot_curvasniveis(expression ,symbols, a, b):
     
     mp.style.use('seaborn-white')
 
-    x = np.linspace(0, 5, 60)
-    y = np.linspace(0, 5, 60)
+    lim_a = int(min(a)-1)
+    lim_b = int(max(a)+1)
+    lim_c = int(min(b)-1)
+    lim_d = int(max(b)+1)
+
+    x = np.linspace(lim_a, lim_b, 60)
+    y = np.linspace(lim_c, lim_d, 60)
 
     X, Y = np.meshgrid(x, y)
   
     Z = funcao1(expression, symbols, X, Y)
 
-    contours = mp.contour(X, Y, Z, 10, colors='black')
+    contours = mp.contour(X, Y, Z, 30, colors='black')
     mp.clabel(contours, inline=True, fontsize=8)
 
-    mp.imshow(Z, extent=[0, 5, 0, 5], origin='lower', cmap='RdGy')
+    mp.imshow(Z, extent=[lim_a, lim_b, lim_c, lim_d], origin='lower', cmap='RdGy')
     mp.colorbar();
     mp.title('Curva de níveis e Convergência')
     mp.xlabel('x')
@@ -95,7 +97,7 @@ def plot_curvasniveis(expression ,symbols, a, b):
         mp.plot(a, b, 'g.')
 
     mp.show()
-
+ 
 
 #Gráfico da Função
 def grafico_3d(expression ,symbols):
@@ -123,7 +125,7 @@ def grafico_3d(expression ,symbols):
     mp.show()
 
 
-#Delocamento da convergência em #D
+#Delocamento da convergência em 3D
 def deslocamento_3d(expression, symbols, a, b):
   
     fig = mp.figure()
@@ -131,7 +133,22 @@ def deslocamento_3d(expression, symbols, a, b):
 
     z = funcao(expression, symbols, a, b)
 
+    grafico.set_title('Gráfico de Convergência em 3D');
     grafico.plot(a, b, z,'k-s')
     grafico.plot(a, b, z,'rs')
-
+    
     mp.show()
+
+    return grafico
+
+
+def graficos(iteracoes, pontos, lista_x, lista_y, expression ,symbols):
+
+    graficos = []
+
+    graficos.append(plot_convergencia(iteracoes, pontos))
+    graficos.append(plot_curvasniveis(expression, symbols, lista_x, lista_y))
+    graficos.append(grafico_3d(expression, symbols))
+    graficos.append(deslocamento_3d(expression, symbols, lista_x, lista_y))
+
+    

@@ -9,14 +9,13 @@ def main():
 
     #Condições Iniciais
     x = 2
-    y = 2 
+    y = 2
 
-    x1 = sy.Symbol('x1')
-    x2 = sy.Symbol('x2')
-    alfa = sy.Symbol('alfa')
+    alfa = sy.Symbols('alfa')
 
-    symbols = sy.symbols("x1 x2 alfa")
+    symbols = sy.symbols("x1 x2")
     funcao = "2*x1**2 - 1.05*x1**4 + ((x1**6)/6) +  x1*x2 + x2**2"
+    funcao = "(4 - 2.1*x1**2 + (x1**4)/3)*x1**2 + x1*x2 + (-4 +4*x2**2)*x2**2"
     expression = sy.parsing.sympy_parser.parse_expr(funcao)
     
     
@@ -43,25 +42,28 @@ def main():
 
     gradiente = sy.Matrix([[grad1], [grad2]])
 
-    inv_hessiana = -hessiana.inv()       #Inverte a matriz hessiana
+    try:
+        inv_hessiana = -hessiana.inv()       #Inverte a matriz hessiana
+
+    except:
+        print("Hessiana não Inversível")
 
     prod = inv_hessiana*gradiente      #Calcula o produto das matrizes
 
     #while (abs(controlex) > 0.00001) or (abs(controley) > 0.00001):
     while k < 10:
         
-        k = k + 1
 
         prod1 = prod.subs(symbols[0], x)
         prod2 = prod1.subs(symbols[1], y)
 
-        y1 = (x + symbols[2]*prod2[0,0])
-        y2 = (y + symbols[2]*prod2[1,0])
+        y1 = (x + alfa*prod2[0,0])
+        y2 = (y + alfa*prod2[1,0])
 
         funcao1 = expression.subs(symbols[0], y1)       #Substituição de de y1 e y2 na função 
         funcao2 = funcao1.subs(symbols[1], y2)
        
-        d1 = sy.diff(funcao2, symbols[2])         #Derivada da função em relação a alfa
+        d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
   
         raiz = (sy.solve(d1))
        
@@ -71,8 +73,8 @@ def main():
         except:
             exit()
 
-        resultado1 = y1.subs(symbols[2], raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
-        resultado2 = y2.subs(symbols[2], raiz)
+        resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
+        resultado2 = y2.subs(alfa, raiz)
         
         print('\nITERAÇÃO',k,":")
         print('Ponto X1:',resultado1,'\nPonto X2:',resultado2)
@@ -85,6 +87,8 @@ def main():
 
 
         iteracoes.append(k)
+        k = k + 1
+
         pontos.append(sg.funcao(expression, symbols, x, y))
         lista_x.append(x)
         lista_y.append(y)

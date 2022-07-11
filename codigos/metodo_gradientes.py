@@ -9,26 +9,27 @@ def main():
     #Condições Iniciais
     x = 4
     y = 4
+    precisao = 0.001
 
-    alfa = sy.Symbols("alfa")
+    alfa = sy.symbols("alfa")
     
     symbols = sy.symbols("x1 x2")
-    funcao = "(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9) + 13"
-    expression = sy.parsing.sympy_parser.parse_expr(funcao)
+    entrada_funcao = "(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9)+13"
+    expression = sy.parsing.sympy_parser.parse_expr(entrada_funcao)
 
-    controlex = 1
-    controley = 1
     k = 0
     pontos = []
     iteracoes = []
     lista_x = []
     lista_y = []
+    laco = True
+
 
     grad1 = sy.diff(expression, symbols[0])         #Gradiente da Função
     grad2 = sy.diff(expression, symbols[1])
 
     #Critério de Parada - Se a variação dos ponto X for maior que 0,001
-    while (abs(controlex) > 0.001) or (abs(controley) > 0.001):
+    while laco == True:
         
         a = grad1.subs(symbols[0], x)               #Valor de X no gradiente
         a2 = a.subs(symbols[1], y)
@@ -46,32 +47,51 @@ def main():
 
         raiz = (sy.solve(d1))               #Raiz da derivada da função
     
-        try:               
+        try: 
             raiz = raiz[0]
 
-        except:
-            exit()
+        except:                             #Critério de Parada 1
+
+            grad1 = grad1.subs(symbols[0], x)
+            grad1 = grad1.subs(symbols[1], y)
+        
+            grad2 = grad2.subs(symbols[1], y)
+            grad2 = grad2.subs(symbols[0], x)
+            
+            if grad1 == 0 and grad2 == 0:                  
+                    k=k+1
+                    print("Gradiente: Zero")
+                    print('ITERAÇÃO',k,":")
+                    print('Ponto X1:',x,'\nPonto X2:',y,'\n')
+                    lista_x.append(x)
+                    lista_y.append(y)
+                    iteracoes.append(k)
+                    break
     
         resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
         resultado2 = y2.subs(alfa, raiz)
+        
+        x = round(resultado1,4)                      #Atualiza os valores de x e y
+        y = round(resultado2,4)
+        
+        k = k + 1 
+        iteracoes.append(k)
+          
+        lista_x.append(x)
+        lista_y.append(y)
+        pontos = sg.funcao(expression, symbols, lista_x, lista_y)
 
         print('\nITERAÇÃO ',k," :")
         print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
-    
-        controlex = resultado1 - x          #Calcula a variação dos valores dos pontos encontrados
-        controley = resultado2 - y
+
         
-        x = resultado1                      #Atualiza os valores de x e y
-        y = resultado2
+        if k >= 5:                                      #Critério de Parada 2
+         
+            fmax = max(pontos[k-5:])
+            fmin = min(pontos[k-5:])
 
-        iteracoes.append(k)
-        k = k + 1 
-
-        pontos.append(sg.funcao(expression, symbols, x, y))
-        lista_x.append(x)
-        lista_y.append(y)
-    
-    pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+            if abs(fmax - fmin) < precisao:
+                laco = False
         
       
     sg.plot_convergencia(iteracoes, pontos)

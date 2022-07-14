@@ -4,17 +4,11 @@ import solucao_grafica as sg
 
 sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
-def main():
-
-    #Condições Iniciais
-    x = 4
-    y = 4
-    precisao = 0.001
+def gradiente(entrada_funcao, x, y, precisao=0.001):
 
     alfa = sy.symbols("alfa")
     
     symbols = sy.symbols("x1 x2")
-    entrada_funcao = "(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9)+13"
     expression = sy.parsing.sympy_parser.parse_expr(entrada_funcao)
 
     k = 0
@@ -84,7 +78,6 @@ def main():
         print('\nITERAÇÃO ',k," :")
         print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
 
-        
         if k >= 5:                                      #Critério de Parada 2
          
             fmax = max(pontos[k-5:])
@@ -96,8 +89,9 @@ def main():
       
     sg.plot_convergencia(iteracoes, pontos)
     sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
-    sg.grafico_3d(expression, symbols)
+    sg.grafico_3d1(expression, symbols, lista_x, lista_y, pontos)
     sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
 
-    
-main()
+
+
+gradiente("(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9)+13", 4, 4, 0.001)

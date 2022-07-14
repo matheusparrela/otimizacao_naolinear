@@ -43,13 +43,17 @@ def main():
         H = sy.Matrix([[h11, h12], [h21, h22]])
         G = sy.Matrix([[a2], [b2]])
 
-        H_inv = H.inv()                 #Inverte a matriz hessiana
-        
-        x0 = P - H_inv*G                #Calcula do ponto x0 
+        try:
+            H_inv = H.inv()                 #Inverte a matriz hessiana
+            x0 = P - H_inv*G                #Calcula do ponto x0 
+
+        except:
+            print("Hessina não Invertivel")
+            break
 
         if (resultado1 != x0[0,0] or resultado2 != x0[1,0]) and k != 0:
             print("Erro - Função não quadrática")
-            exit()
+            break
 
         resultado1 = x0[0,0]           #Retira os resultados da matriz
         resultado2 = x0[1,0]
@@ -64,10 +68,12 @@ def main():
         lista_y.append(y)
     
     pontos = sg.funcao(expression, symbols, lista_x, lista_y)
-        
-    sg.plot_convergencia(iteracoes, pontos)
-    sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
-    sg.grafico_3d(expression, symbols)
-    sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
+
+    if k >= 4:
+    
+        sg.plot_convergencia(iteracoes, pontos)
+        sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
+        sg.grafico_3d(expression, symbols)
+        #sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
 
 main()

@@ -1,8 +1,11 @@
+from click import make_pass_decorator
 from matplotlib import projections
 import matplotlib.pyplot as mp
 import numpy as np
 import pandas
 import operator
+
+from sympy import limit_seq
 
 def funcao(expression, symbols, x, y):
 
@@ -151,4 +154,64 @@ def graficos(iteracoes, pontos, lista_x, lista_y, expression ,symbols):
     graficos.append(grafico_3d(expression, symbols))
     graficos.append(deslocamento_3d(expression, symbols, lista_x, lista_y))
 
+
+from mpl_toolkits.mplot3d import axes3d
+import matplotlib.pyplot as plt
+from matplotlib import cm
+
+
+def grafico_misto():
+
+    fig = mp.figure()
+    ax = fig.gca(projection='3d')
+    X, Y, Z = axes3d.get_test_data(0.05)
+    ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
+    cset = ax.contourf(X, Y, Z, zdir='z', offset=-100, cmap=cm.coolwarm)
+    cset = ax.contourf(X, Y, Z, zdir='x', offset=-40, cmap=cm.coolwarm)
+    cset = ax.contourf(X, Y, Z, zdir='y', offset=40, cmap=cm.coolwarm)
     
+    ax.set_xlabel('X')
+    ax.set_xlim(-40, 40)
+    ax.set_ylabel('Y')
+    ax.set_ylim(-40, 40)
+    ax.set_zlabel('Z')
+    ax.set_zlim(-100, 100)
+ 
+    mp.show()
+
+
+#grafico_misto()
+
+def grafico_3d1(expression ,symbols, a , b, p):
+
+    fig = mp.figure()
+    ax = mp.axes(projection="3d")
+
+    lim_a = int(min(a)-2)
+    lim_b = int(max(a)+2)
+    lim_c = int(min(b)-2)
+    lim_d = int(max(b)+2)
+    lim_e = int(max(p)+2)
+    lim_f = int(min(p)-2)
+        
+    
+    x = np.linspace(lim_a, lim_b, 15)
+    y = np.linspace(lim_c, lim_d, 15)
+        
+    X, Y = np.meshgrid(x, y)
+    Z = funcao1(expression ,symbols, X, Y)
+        
+    ax.plot_wireframe(X, Y, Z, color='green')
+    
+    ax.set_xlabel('X')
+    ax.set_xlim(lim_a-1, lim_b+1)
+    ax.set_ylabel('Y')
+    ax.set_ylim(lim_c-1, lim_d+1)
+    ax.set_zlabel('Z')
+    ax.set_zlim(lim_f-3, lim_e+5)
+        
+    ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
+                        cmap='viridis', edgecolor='none')
+    ax.set_title('Gráfico de superfícies');
+        
+    mp.show()

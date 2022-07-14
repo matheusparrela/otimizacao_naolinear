@@ -2,7 +2,7 @@
 import sympy as sy
 import solucao_grafica as sg
 
-def main(): 
+def modificado(): 
   
     sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
@@ -17,6 +17,7 @@ def main():
     symbols = sy.symbols("x1 x2")
     entrada_funcao = "2*x1**2 - 1.05*x1**4 + ((x1**6)/6) +  x1*x2 + x2**2"
     entrada_funcao = "(4 - 2.1*x1**2 + (x1**4)/3)*x1**2 + x1*x2 + (-4 +4*x2**2)*x2**2"
+    entrada_funcao ="(x1-1)**2 + 2*((2*x2**2 - x1)**2)"
     expression = sy.parsing.sympy_parser.parse_expr(entrada_funcao)
         
     
@@ -124,11 +125,16 @@ def main():
     
     if k > 4:
         #Plote dos Gráficos
+        #sg.grafico_misto(expression, symbols, lista_x, lista_y, pontos)
         sg.plot_convergencia(iteracoes, pontos)
         sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
-        sg.grafico_3d1(expression, symbols, lista_x, lista_y, pontos)
+        #sg.grafico_3d1(expression, symbols, lista_x, lista_y, pontos)
         sg.grafico_3d(expression, symbols)
         #sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
 
 
-main()
+modificado()
+
+
+
+

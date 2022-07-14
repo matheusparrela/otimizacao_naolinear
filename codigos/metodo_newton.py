@@ -2,7 +2,7 @@
 import sympy as sy
 import solucao_grafica as sg
 
-def main(): 
+def newton(): 
   
     sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
@@ -75,5 +75,6 @@ def main():
         sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
         sg.grafico_3d(expression, symbols)
         #sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
+        #sg.grafico_misto(expression, symbols, lista_x, lista_y, pontos)
 
-main()
+newton()

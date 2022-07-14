@@ -160,24 +160,39 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 
-def grafico_misto():
+def grafico_misto(expression, symbols, a, b, p):
+
+    lim_a = int(min(a)-5)
+    lim_b = int(max(a)+5)
+    lim_c = int(min(b)-5)
+    lim_d = int(max(b)+5)
+    lim_e = int(min(p)-5)
+    lim_f = int(max(p)+5)
+        
+
+    x = np.linspace(lim_a+1, lim_b-1, 30)
+    y = np.linspace(lim_c+1, lim_d-1, 30)
+        
+    X, Y = np.meshgrid(x, y)
+    Z = funcao1(expression ,symbols, X, Y)
 
     fig = mp.figure()
     ax = fig.gca(projection='3d')
-    X, Y, Z = axes3d.get_test_data(0.05)
-    ax.plot_surface(X, Y, Z, rstride=8, cstride=8, alpha=0.3)
-    cset = ax.contourf(X, Y, Z, zdir='z', offset=-100, cmap=cm.coolwarm)
-    cset = ax.contourf(X, Y, Z, zdir='x', offset=-40, cmap=cm.coolwarm)
-    cset = ax.contourf(X, Y, Z, zdir='y', offset=40, cmap=cm.coolwarm)
+    
+    ax.plot_surface(X, Y, Z, rstride=5, cstride=5, alpha=0.3)
+    cset = ax.contourf(X, Y, Z, zdir='z', offset=lim_e, cmap=cm.coolwarm)
+    cset = ax.contourf(X, Y, Z, zdir='x', offset=lim_a, cmap=cm.coolwarm)
+    cset = ax.contourf(X, Y, Z, zdir='y', offset=lim_c, cmap=cm.coolwarm)
     
     ax.set_xlabel('X')
-    ax.set_xlim(-40, 40)
+    ax.set_xlim(lim_a, lim_b+3)
     ax.set_ylabel('Y')
-    ax.set_ylim(-40, 40)
+    ax.set_ylim(lim_c, lim_d+3)
     ax.set_zlabel('Z')
-    ax.set_zlim(-100, 100)
+    ax.set_zlim(lim_e, lim_f+10)
  
     mp.show()
+
 
 
 #grafico_misto()

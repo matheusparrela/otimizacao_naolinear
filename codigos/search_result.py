@@ -1,4 +1,5 @@
 # Non Linear Optimization - SearchResult
+from __future__ import annotations
 import sympy
 import utils
 from dataclasses import dataclass
@@ -11,9 +12,10 @@ class SearchResult:
 
     # Fields (variables of class)
 
-    function: str             #  >> Expression, in text format, informed by the user
-    path: list[list[float]]   #  >> List of x1 and x2 of each iteration, like: [[0, 0], [1, 1.5], ...]. Put the start point at first.
-    converged: bool           #  >> True if found the result, False if not
+    function: str               #  >> Expression, in text format, informed by the user
+    path: list[list[float]]     #  >> List of x1 and x2 of each iteration, like: [[0, 0], [1, 1.5], ...]. Put the start point at first.
+    converged: bool             #  >> True if found the result, False if not
+    precision_decimals: float   #  >> Precision decimals of the method, like "4" to set the precision 0.0001
 
     # Predefined fields (variables of class that is automatically initialized)
 
@@ -49,18 +51,19 @@ class SearchResult:
         """
         if self.path_results is None:
             symbols_list = sympy.symbols(self.symbols)
-            expression = sympy.parsing.sympy_parser.parse_expr(self.function)
+            expression = utils.make_expression(self.function)
             self.path_results = []
             for point in self.path:
                 self.path_results.append(float(utils.symbols_eval(expression, symbols_list, point)))
 
     def __str__(self) -> str:
         """
-        Magic function that is called when the code call "print(<este objeto>)"
+        Magic function that is called when the code call "print(<this object>)"
         """
         result = 'Search result:'
         result += f'\n  function: {self.function}'
-        result += f'\n  symbols: {self.symbols}\n  --'
+        result += f'\n  symbols: {self.symbols}'
+        result += f'\n  precision_decimals: {self.precision_decimals}\n  --'
         for k in range(len(self.path)):
             result += f'\n  iteration {k} point {self.path[k]} -> f() = {self.path_results[k]}'
         result += f'\n  --\n  start point: {self.start_point()}'

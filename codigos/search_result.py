@@ -1,5 +1,4 @@
 # Non Linear Optimization - SearchResult
-from __future__ import annotations
 import sympy
 import utils
 from dataclasses import dataclass

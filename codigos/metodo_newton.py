@@ -78,8 +78,8 @@ def newton(function, x, y, precision_decimals):
         sg.grafico_3d(expression, symbols)
         #sg.grafico_misto(expression, symbols, lista_x, lista_y, pontos)
 
-    return sr.SearchResult(function, points, converged)
+    return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = newton("((x1 - 3)**2 + (x2 - 2)**2)", 3/4, 1/4, precision_decimals=4)
+result = newton("((x1 - 3)**2 + (x2 - 2)**2)", 3/4, 1/4, 4)
 
 print(result)

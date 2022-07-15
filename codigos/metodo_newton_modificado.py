@@ -112,8 +112,8 @@ def modificado(function, x, y, precision_decimals=4):
         sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
         sg.grafico_3d(expression, symbols)
 
-    return sr.SearchResult(function, points, converged)
+    return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = modificado("(x1-1)**2 + 2*((2*x2**2 - x1)**2)", 0.25, -0.8, precision_decimals=4)
+result = modificado("(4 - 2.1*x1**2 + (x1**4)/3)*x1**2 + x1*x2 + (-4 +4*x2**2)*x2**2", 0.25, -0.8, 4)
 
 print(result)

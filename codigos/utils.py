@@ -37,3 +37,6 @@ def symbols_eval(expression, symbols_list, symbols_values):
         else:
             result = substitution(result, symbols_list, symbols_values)
     return result
+
+def make_expression(function: str):
+    return sympy.parsing.sympy_parser.parse_expr(function.replace("^", "**"))

@@ -1,4 +1,4 @@
-#OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DE QUASI NEWTON  
+#OTIMIZAÇÃO NÃO LINEAR - MÉTODO DE QUASI NEWTON  
 #Nâo funciona 
 from numpy import gradient
 import sympy as sy

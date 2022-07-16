@@ -1,30 +1,31 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DOS GRADIENTES
-from cmath import exp
 import sympy as sy
 import solucao_grafica as sg 
+import search_result as sr
 
 sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
-def gradiente(entrada_funcao, x, y, precisao=0.001):
+def gradiente(function, x, y, precision_decimals=4):
 
     alfa = sy.symbols("alfa")
-    
     symbols = sy.symbols("x1 x2")
-    expression = sy.parsing.sympy_parser.parse_expr(entrada_funcao)
+    expression = sy.parsing.sympy_parser.parse_expr(function)
+
+    precision = 10**(-precision_decimals)
 
     k = 0
     pontos = []
-    iteracoes = []
-    lista_x = []
-    lista_y = []
-    laco = True
-
+    iteracoes = [0]
+    lista_x = [x]
+    lista_y = [y]
+    loop = True
+    converged = True
+    points = [[x,y]]
 
     grad1 = sy.diff(expression, symbols[0])         #Gradiente da Função
     grad2 = sy.diff(expression, symbols[1])
 
-    #Critério de Parada - Se a variação dos ponto X for maior que 0,001
-    while laco == True:
+    while loop == True:
         
         a = grad1.subs(symbols[0], x)               #Valor de X no gradiente
         a2 = a.subs(symbols[1], y)
@@ -39,14 +40,12 @@ def gradiente(entrada_funcao, x, y, precisao=0.001):
         funcao2 = funcao1.subs(symbols[1], y2)
         
         d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
-
         raiz = (sy.solve(d1))               #Raiz da derivada da função
     
         try: 
             raiz = raiz[0]
 
         except:                             #Critério de Parada 1
-
             grad1 = grad1.subs(symbols[0], x)
             grad1 = grad1.subs(symbols[1], y)
         
@@ -56,19 +55,18 @@ def gradiente(entrada_funcao, x, y, precisao=0.001):
             if grad1 == 0 and grad2 == 0:                  
                     k=k+1
                     print("Gradiente: Zero")
-                    print('ITERAÇÃO',k,":")
-                    print('Ponto X1:',x,'\nPonto X2:',y,'\n')
+
                     lista_x.append(x)
                     lista_y.append(y)
+                    pontos = sg.function(expression, symbols, lista_x, lista_y)
                     iteracoes.append(k)
                     break
     
-        resultado1 = y1.subs(alfa, raiz)    #Substitui o valor da raiz de alfa na expressão de alfa
-        resultado2 = y2.subs(alfa, raiz)
-        
-        x = round(resultado1,4)                      #Atualiza os valores de x e y
-        y = round(resultado2,4)
-        
+        #Substitui o valor da raiz de alfa na expressão de alfa
+        x = round(y1.subs(alfa, raiz), precision_decimals)         #Atualiza os valores de x e y
+        y = round(y2.subs(alfa, raiz), precision_decimals)
+
+        points.append([x,y])
         k = k + 1 
         iteracoes.append(k)
           
@@ -76,19 +74,21 @@ def gradiente(entrada_funcao, x, y, precisao=0.001):
         lista_y.append(y)
         pontos = sg.function(expression, symbols, lista_x, lista_y)
 
-        print('\nITERAÇÃO ',k," :")
-        print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
-
-        if k >= 5:                                      #Critério de Parada 2
-         
+        if k >= 5:                                      #Critério de Parada 2         
             fmax = max(pontos[k-5:])
             fmin = min(pontos[k-5:])
 
-            if abs(fmax - fmin) < precisao:
-                laco = False
+            if abs(fmax - fmin) < precision:
+                loop = False
 
-    
+        if k>= 100:                                     #Critério de Parada 3
+            print("Não Convergiu")
+            converged = False
+            loop = False    
+
     sg.graphic_solution(expression, symbols, lista_x, lista_y, pontos, iteracoes)
 
+    return sr.SearchResult(function, points, converged, precision_decimals)
 
-gradiente("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 0.001)
+result = gradiente("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 4)
+print(result)

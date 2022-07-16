@@ -1,4 +1,4 @@
-#OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DE NEWTON
+#OTIMIZAÇÃO NÃO LINEAR - MÉTODO DE NEWTON
 import sympy as sy
 import solucao_grafica as sg
 import search_result as sr
@@ -7,21 +7,15 @@ def newton(function, x, y, precision_decimals):
   
     sy.init_printing(use_latex='png', scale=1.05, order='grlex',forecolor='Black', backcolor='White', fontsize=10)
 
-    points = []
-    points.append([x,y])
-
+    points = [[x,y]]
     converged = True
 
-    pontos = []
-    iteracoes = []
-    lista_x = []
-    lista_y = []
     k = 0
-
-    iteracoes.append(k)
-    lista_x.append(x)
-    lista_y.append(y)
-
+    pontos = []
+    iteracoes = [k]
+    lista_x = [x]
+    lista_y = [y]
+    
     symbols = sy.symbols("x1 x2")    
     expression = sy.parsing.sympy_parser.parse_expr(function)
     
@@ -77,5 +71,4 @@ def newton(function, x, y, precision_decimals):
     return sr.SearchResult(function, points, converged, precision_decimals)
 
 result = newton("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 4)
-
 print(result)

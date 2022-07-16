@@ -3,14 +3,14 @@ import numpy as np
 import pandas
 import operator
 
-def function(expression, symbols, x, y):
+def function(expression, symbols, points):
 
-    l = operator.length_hint(x)
+    len = operator.length_hint(points)
     f = []
 
-    for i in range (0, l):        
-        e = expression.subs(symbols[0], x[i])
-        f.append(e.subs(symbols[1], y[i]))
+    for i in range (0, len):        
+        e = expression.subs(symbols[0], points[i][0])
+        f.append(e.subs(symbols[1], points[i][0]))
     
     return f
 
@@ -41,7 +41,19 @@ def plot_path(x , y):
         return
 
 
-def graphic_solution(expression, symbols, a, b, pontos, iteracoes):
+def list_separator(points):
+
+    x = []
+    y = []
+    len = operator.length_hint(points)
+ 
+    for i in range (0, len):
+        x.append(points[i][0])
+        y.append(points[i][1])
+    return  x, y
+
+
+def graphic_solution(expression, symbols, points, image_z, iterations):
 
     #Gráfico 3D
     fig = mp.figure(figsize = (12, 8), dpi=130)
@@ -62,7 +74,7 @@ def graphic_solution(expression, symbols, a, b, pontos, iteracoes):
     ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
     ax.set_title('FUNÇÃO', fontsize = 8)
 
-    #Gráfico de convergencia
+    #Gráfico de convergência
     mp.subplot2grid((7,7),(0,4), rowspan=7, colspan=3)
     mp.style.use('seaborn-ticks')
 
@@ -70,19 +82,21 @@ def graphic_solution(expression, symbols, a, b, pontos, iteracoes):
     mp.ylabel('f(x,y)', fontsize = 10)
     mp.xlabel('Iterações', fontsize = 10)
 
-    lim_a = int(min(pontos)-1)
-    lim_b = int(max(pontos)+1)
-    lim_c = int(min(iteracoes))
-    lim_d = int(max(iteracoes)+1)
+    lim_a = int(min(image_z)-1)
+    lim_b = int(max(image_z)+1)
+    lim_c = int(min(iterations))
+    lim_d = int(max(iterations)+1)
 
     mp.ylim(lim_a,lim_b)
     mp.xlim(lim_c,lim_d)
-    mp.plot(iteracoes, pontos, 'k-h')
-    mp.plot(iteracoes, pontos,'rh')
+    mp.plot(iterations, image_z, 'k-h')
+    mp.plot(iterations, image_z,'rh')
 
     #Curvas de Nível
     mp.subplot2grid((7,7),(0,0), rowspan=3, colspan=3)    
     mp.style.use('_classic_test_patch')
+    
+    a, b = list_separator(points)
 
     lim_a = int(min(a)-1)
     lim_b = int(max(a)+1)
@@ -105,9 +119,10 @@ def graphic_solution(expression, symbols, a, b, pontos, iteracoes):
     mp.xlabel('x', fontsize = 10, color='gray')
     mp.ylabel('y', fontsize = 10, color='gray')
 
-    if len(a) > 2:
-        plot_path(a,b)
+    if len(points) > 2:
+        plot_path(a, b)
         mp.plot(a, b, 'g.')
+ 
     else:
         mp.plot(a, b, 'g.')
 

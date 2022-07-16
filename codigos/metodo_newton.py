@@ -9,16 +9,18 @@ def newton(function, x, y, precision_decimals):
 
     points = [[x,y]]
     converged = True
-
     k = 0
-    pontos = []
-    iteracoes = [k]
-    lista_x = [x]
-    lista_y = [y]
+    iterations = [k]
     
-    symbols = sy.symbols("x1 x2")    
-    expression = sy.parsing.sympy_parser.parse_expr(function)
+    symbols = sy.symbols("x1 x2")
     
+    try:    
+        expression = sy.parsing.sympy_parser.parse_expr(function)
+    
+    except:
+        print("Erro na função")
+        return 1
+
     grad = []
     grad.append(sy.diff(expression, symbols[0]))        #Gradiente da Função
     grad.append(sy.diff(expression, symbols[1]))
@@ -58,17 +60,15 @@ def newton(function, x, y, precision_decimals):
         x = round(x0[0,0], precision_decimals)           #Retira os resultados da matriz
         y = round(x0[1,0], precision_decimals)
 
-        iteracoes.append(k+1)
+        iterations.append(k+1)
         points.append([x,y])
-        lista_x.append(x)
-        lista_y.append(y)
     
-    pontos = sg.function(expression, symbols, lista_x, lista_y)
+    image_z = sg.function(expression, symbols, points)
 
     if k >= 4:
-        sg.graphic_solution(expression, symbols, lista_x, lista_y, pontos, iteracoes)
+        sg.graphic_solution(expression, symbols, points, image_z, iterations)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = newton("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 4)
+result = newton("(x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2", 4, 4, 4)
 print(result)

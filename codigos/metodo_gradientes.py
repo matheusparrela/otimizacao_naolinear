@@ -1,4 +1,4 @@
-#OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DOS GRADIENTES
+#OTIMIZAÇÃO NÃO LINEAR - MÉTODO DO GRADIENTE
 import sympy as sy
 import solucao_grafica as sg 
 import search_result as sr
@@ -9,15 +9,17 @@ def gradiente(function, x, y, precision_decimals=4):
 
     alfa = sy.symbols("alfa")
     symbols = sy.symbols("x1 x2")
-    expression = sy.parsing.sympy_parser.parse_expr(function)
+    
+    try:    
+        expression = sy.parsing.sympy_parser.parse_expr(function)
+    
+    except:
+        print("Erro na função")
+        return 1
 
     precision = 10**(-precision_decimals)
-
     k = 0
-    pontos = []
-    iteracoes = [0]
-    lista_x = [x]
-    lista_y = [y]
+    iterations = [0]
     loop = True
     converged = True
     points = [[x,y]]
@@ -27,25 +29,25 @@ def gradiente(function, x, y, precision_decimals=4):
 
     while loop == True:
         
-        a = grad1.subs(symbols[0], x)               #Valor de X no gradiente
+        a = grad1.subs(symbols[0], x)                   #Valor de x1 no gradiente
         a2 = a.subs(symbols[1], y)
 
-        b = grad2.subs(symbols[0], x)               #Valor de Y no gradiente
+        b = grad2.subs(symbols[0], x)                   #Valor de x2 no gradiente
         b2 = b.subs(symbols[1], y)
     
-        y1 = (x - alfa*a2)                  #Expressão do alfa
+        y1 = (x - alfa*a2)                              #Expressão do alfa
         y2 = (y - alfa*b2)
 
         funcao1 = expression.subs(symbols[0], y1)       #Substituição de de y1 e y2 na função 
         funcao2 = funcao1.subs(symbols[1], y2)
         
-        d1 = sy.diff(funcao2, alfa)         #Derivada da função em relação a alfa
-        raiz = (sy.solve(d1))               #Raiz da derivada da função
+        df_dalfa = sy.diff(funcao2, alfa)                     #Derivada da função em relação a alfa
+        raiz = (sy.solve(df_dalfa))                           #Raiz da derivada da função
     
         try: 
             raiz = raiz[0]
 
-        except:                             #Critério de Parada 1
+        except:                                         #Critério de Parada 1
             grad1 = grad1.subs(symbols[0], x)
             grad1 = grad1.subs(symbols[1], y)
         
@@ -55,11 +57,9 @@ def gradiente(function, x, y, precision_decimals=4):
             if grad1 == 0 and grad2 == 0:                  
                     k=k+1
                     print("Gradiente: Zero")
-
-                    lista_x.append(x)
-                    lista_y.append(y)
-                    pontos = sg.function(expression, symbols, lista_x, lista_y)
-                    iteracoes.append(k)
+                    points.append([x,y])
+                    image_z = sg.function(expression, symbols, points)
+                    iterations.append(k)
                     break
     
         #Substitui o valor da raiz de alfa na expressão de alfa
@@ -68,15 +68,13 @@ def gradiente(function, x, y, precision_decimals=4):
 
         points.append([x,y])
         k = k + 1 
-        iteracoes.append(k)
+        iterations.append(k)
           
-        lista_x.append(x)
-        lista_y.append(y)
-        pontos = sg.function(expression, symbols, lista_x, lista_y)
+        image_z = sg.function(expression, symbols, points)
 
         if k >= 5:                                      #Critério de Parada 2         
-            fmax = max(pontos[k-5:])
-            fmin = min(pontos[k-5:])
+            fmax = max(image_z[k-5:])
+            fmin = min(image_z[k-5:])
 
             if abs(fmax - fmin) < precision:
                 loop = False
@@ -86,7 +84,7 @@ def gradiente(function, x, y, precision_decimals=4):
             converged = False
             loop = False    
 
-    sg.graphic_solution(expression, symbols, lista_x, lista_y, pontos, iteracoes)
+    sg.graphic_solution(expression, symbols, points, image_z, iterations)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 

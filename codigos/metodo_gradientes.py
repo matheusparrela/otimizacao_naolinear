@@ -1,4 +1,5 @@
 #OTIMIZAÇÃO NÃO LINEAR - MÉTODOS DOS GRADIENTES
+from cmath import exp
 import sympy as sy
 import solucao_grafica as sg 
 
@@ -73,7 +74,7 @@ def gradiente(entrada_funcao, x, y, precisao=0.001):
           
         lista_x.append(x)
         lista_y.append(y)
-        pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+        pontos = sg.function(expression, symbols, lista_x, lista_y)
 
         print('\nITERAÇÃO ',k," :")
         print('Ponto X1:',float((resultado1)),'\nPonto X2:',float(resultado2))
@@ -85,13 +86,9 @@ def gradiente(entrada_funcao, x, y, precisao=0.001):
 
             if abs(fmax - fmin) < precisao:
                 laco = False
-        
-      
-    sg.plot_convergencia(iteracoes, pontos)
-    sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
-    sg.grafico_3d1(expression, symbols, lista_x, lista_y, pontos)
-    sg.deslocamento_3d(expression, symbols, lista_x, lista_y)
+
+    
+    sg.graphic_solution(expression, symbols, lista_x, lista_y, pontos, iteracoes)
 
 
-
-gradiente("(((x1 - 3)**2)/4 + ((x2 - 2)**2)/9)+13", 4, 4, 0.001)
+gradiente("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 0.001)

@@ -89,7 +89,7 @@ def modificado(function, x, y, precision_decimals=4):
         points.append([x,y])
         lista_x.append(x)
         lista_y.append(y)
-        pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+        pontos = sg.function(expression, symbols, lista_x, lista_y)
         
         k = k + 1
         iteracoes.append(k)
@@ -102,15 +102,11 @@ def modificado(function, x, y, precision_decimals=4):
             if abs(fmax - fmin) < precision:
                 laco = False
 
-    pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+    pontos = sg.function(expression, symbols, lista_x, lista_y)
     
     if k > 4:
-        
         #Plote dos Gráficos
-        #sg.grafico_misto(expression, symbols, lista_x, lista_y, pontos)
-        sg.plot_convergencia(iteracoes, pontos)
-        sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
-        sg.grafico_3d(expression, symbols)
+        sg.graphic_solution(expression, symbols, lista_x, lista_y, pontos, iteracoes)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 

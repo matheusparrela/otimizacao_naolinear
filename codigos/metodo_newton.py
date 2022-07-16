@@ -69,17 +69,13 @@ def newton(function, x, y, precision_decimals):
         lista_x.append(x)
         lista_y.append(y)
     
-    pontos = sg.funcao(expression, symbols, lista_x, lista_y)
+    pontos = sg.function(expression, symbols, lista_x, lista_y)
 
     if k >= 4:
-    
-        sg.plot_convergencia(iteracoes, pontos)
-        sg.plot_curvasniveis(expression, symbols, lista_x, lista_y)
-        sg.grafico_3d(expression, symbols)
-        #sg.grafico_misto(expression, symbols, lista_x, lista_y, pontos)
+        sg.graphic_solution(expression, symbols, lista_x, lista_y, pontos, iteracoes)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = newton("((x1 - 3)**2 + (x2 - 2)**2)", 3/4, 1/4, 4)
+result = newton("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 4)
 
 print(result)

@@ -73,10 +73,13 @@ def gradiente(function, x, y, precision_decimals=4):
         image_z = sg.function(expression, symbols, points)
 
         if k >= 5:                                      #Critério de Parada 2         
+            
+            delta = max(image_z)-min(image_z)
+            
             fmax = max(image_z[k-5:])
             fmin = min(image_z[k-5:])
 
-            if abs(fmax - fmin) < precision:
+            if abs(fmax - fmin) < delta*precision:
                 loop = False
 
         if k>= 100:                                     #Critério de Parada 3

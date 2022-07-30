@@ -65,10 +65,10 @@ def newton(function, x, y, precision_decimals):
     
     image_z = sg.function(expression, symbols, points)
 
-    if k >= 4:
-        sg.graphic_solution(expression, symbols, points, image_z, iterations)
+    #if k >= 4:
+    #    sg.graphic_solution(expression, symbols, points, image_z, iterations)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = newton("(x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2", 4, 4, 4)
-print(result)
+#result = newton("(x1 + 2*x2 - 7)**2 + (2*x1 + x2 - 5)**2", 4, 4, 4)
+#print(result)

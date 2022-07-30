@@ -3,6 +3,7 @@ from __future__ import annotations
 import sympy
 import utils
 from dataclasses import dataclass
+import solucao_grafica
 
 @dataclass
 class SearchResult:
@@ -41,6 +42,18 @@ class SearchResult:
             return self.path_results[-1]
         else:
             return None
+
+    def plot(self, filename: str = ''):
+        """
+        Plot the result in new window or saving in specific filename
+        """
+        symbols_list = sympy.symbols(self.symbols)
+        expression = utils.make_expression(self.function)
+        image_z = solucao_grafica.function(expression, symbols_list, self.path)
+        iterations = []
+        for k in range(self.iterations() + 1):
+            iterations.append(k + 1)
+        solucao_grafica.graphic_solution(expression, symbols_list, self.path, image_z, iterations, filename)
 
     # Magic functions
 

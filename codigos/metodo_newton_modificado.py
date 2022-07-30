@@ -98,11 +98,11 @@ def modificado(function, x, y, precision_decimals=4):
             converged = False
             loop = False
 
-    if k > 4:
+    #if k > 4:
         #Plote dos Gráficos
-        sg.graphic_solution(expression, symbols, points, image_z, iterations)
+    #    sg.graphic_solution(expression, symbols, points, image_z, iterations)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = modificado("(4 - 2.1*x1**2 + (x1**4)/3)*x1**2 + x1*x2 + (-4 +4*x2**2)*x2**2", 0.25, -0.8, 4)
-print(result)
+#result = modificado("(4 - 2.1*x1**2 + (x1**4)/3)*x1**2 + x1*x2 + (-4 +4*x2**2)*x2**2", 0.25, -0.8, 4)
+#print(result)

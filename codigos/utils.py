@@ -40,3 +40,8 @@ def symbols_eval(expression, symbols_list, symbols_values):
 
 def make_expression(function: str):
     return sympy.parsing.sympy_parser.parse_expr(function.replace("^", "**"))
+
+def parse_start_point(points_text: str, coordinates: int):
+    result = numpy.fromstring(points_text.replace(", ", " ").replace(",", "."), dtype=float, sep=' ')
+    assert len(result) == coordinates, f'Inform {coordinates} coordinates in start point'
+    return result

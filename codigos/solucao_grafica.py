@@ -53,7 +53,7 @@ def list_separator(points):
     return  x, y
 
 
-def graphic_solution(expression, symbols, points, image_z, iterations):
+def graphic_solution(expression, symbols, points, image_z, iterations, filename: str = ""):
 
     #Gráfico 3D
     fig = mp.figure(figsize = (12, 8), dpi=130)
@@ -114,7 +114,7 @@ def graphic_solution(expression, symbols, points, image_z, iterations):
     mp.clabel(contours, inline=True, fontsize=8)
 
     mp.imshow(Z, extent=[lim_a, lim_b, lim_c, lim_d], origin='lower', cmap='RdGy')
-    mp.colorbar();
+    mp.colorbar()
     mp.title('CURVAS DE NÍVEL', fontsize = 8)
     mp.xlabel('x', fontsize = 10, color='gray')
     mp.ylabel('y', fontsize = 10, color='gray')
@@ -126,4 +126,7 @@ def graphic_solution(expression, symbols, points, image_z, iterations):
     else:
         mp.plot(a, b, 'g.')
 
-    mp.show()
+    if (filename is None) or (filename == ""):
+        mp.show()
+    else:
+        mp.savefig(filename, facecolor='#f8f8f8', edgecolor='none')

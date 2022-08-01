@@ -4,8 +4,6 @@ import search_result
 import metodo_newton
 import metodo_newton_modificado
 import utils
-import sympy as sy
-
 
 class frmMain(Form):
     last_result: search_result.SearchResult

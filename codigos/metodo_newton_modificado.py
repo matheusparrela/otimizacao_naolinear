@@ -72,7 +72,7 @@ def modificado(function, x, y, precision_decimals=4):
             if grad1 == 0 and grad2 == 0:
                     k = k+1
                     print("Gradiente: Zero")
-                    points.append[x , y]
+                    points.append([x , y])
                     image_z = sg.function(expression, symbols, points)
                     iterations.append(k)
                     k = 5

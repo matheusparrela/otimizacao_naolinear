@@ -2,6 +2,7 @@ import matplotlib.pyplot as mp
 import numpy as np
 import pandas
 import operator
+import sympy as sy
 
 def function(expression, symbols, points):
 
@@ -10,7 +11,7 @@ def function(expression, symbols, points):
 
     for i in range (0, len):        
         e = expression.subs(symbols[0], points[i][0])
-        f.append(e.subs(symbols[1], points[i][0]))
+        f.append(e.subs(symbols[1], points[i][1]))
     
     return f
 

@@ -87,7 +87,7 @@ def graphic_solution(expression, symbols, points, image_z, iterations, filename:
     lim_c = int(min(iterations))
     lim_d = int(max(iterations)+1)
 
-    mp.ylim(lim_a,lim_b)
+    mp.ylim(lim_a-(lim_b),lim_b)
     mp.xlim(lim_c,lim_d)
     mp.plot(iterations, image_z, 'k-h')
     mp.plot(iterations, image_z,'rh')

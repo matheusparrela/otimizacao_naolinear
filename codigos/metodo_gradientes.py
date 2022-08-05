@@ -9,7 +9,7 @@ def gradiente(function, x, y, precision_decimals=4):
 
     alfa = sy.symbols("alfa")
     symbols = sy.symbols("x1 x2")
-    
+
     try:    
         expression = sy.parsing.sympy_parser.parse_expr(function)
     
@@ -86,10 +86,15 @@ def gradiente(function, x, y, precision_decimals=4):
             print("Não Convergiu")
             converged = False
             loop = False    
-
+        print(k)
     sg.graphic_solution(expression, symbols, points, image_z, iterations)
 
     return sr.SearchResult(function, points, converged, precision_decimals)
 
-result = gradiente("0.26*(x1**2 + x2**2) - 0.48*x1*x2", 4, 4, 4)
+
+
+funcao = '(x1 + 2*x2 -7)**2 + (2* x1 + x2 - 5)**2'
+
+result = gradiente(funcao,1, 1, 4)
 print(result)
+

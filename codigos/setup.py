@@ -9,8 +9,8 @@ cx_Freeze.setup(
     name = "Otimização Não Linear",
     version = "1.0",
     options = {"build_exe": {'packages':['sympy'],
-    'include':['pandas','matplotlib','numpy','delphifmx'],
-    'include_files': ['MainForm.pyfmx', 'metodo_newton.py','metod_newton_modificado.py','search_result.py','solucao_grafica.py','utils.py','__pycache__','metodo_gradiente.py']}},
+    'includes':['pandas','matplotlib','numpy','delphifmx'],
+    'include_files': ['MainForm.pyfmx', 'metodo_newton.py','metod_newton_modificado.py','search_result.py','solucao_grafica.py','utils.py','__pycache__','metodo_gradiente.py','penalidade.py','barreira.py']}},
 
     executables = executables    
     
